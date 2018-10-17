@@ -25,8 +25,7 @@ public final class RDFRawParser {
 
 		Reader reader = new FileReader("100K.rdfxml");
 
-		RDFParser rdfParser = Rio
-				.createParser(RDFFormat.RDFXML);
+		RDFParser rdfParser = Rio.createParser(RDFFormat.RDFXML);
 		rdfParser.setRDFHandler(new RDFListener());
 		try {
 			rdfParser.parse(reader, "");
