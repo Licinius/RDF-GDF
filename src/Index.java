@@ -44,4 +44,9 @@ public abstract class Index {
 		return getThirdColumn(n,m).size();
 		
 	}
+	
+	public String toString() {
+		return index.toString();
+	}
+	
 }
