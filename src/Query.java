@@ -24,9 +24,6 @@ public class Query {
 	private ArrayList<Triplet> where;
 	
 	public Query(String query) {
-		/*
-		SELECT ?v0 WHERE {?v0 <http://schema.org/eligibleRegion> <http://db.uwaterloo.ca/~galuc/wsdbm/Country137> . } 
-		 */
 		query = query.replace("\n", "");
 		Pattern selectPattern = Pattern.compile("SELECT (\\?[A-z][0-9](\\,\\?[A-z][0-9])*) WHERE .*");
 		Matcher matcher = selectPattern.matcher(query);
@@ -45,7 +42,7 @@ public class Query {
 	}
 	
 	public String toString() {
-		String res = "Select "+ String.join(",", select) + "WHERE {";
+		String res = "Select "+ String.join(",", select) + " WHERE {";
 		res += where.stream()
 				   .map(t -> t.toString())
 				   .collect(Collectors.joining(" . "));
