@@ -1,14 +1,15 @@
 import java.util.HashMap;
+import java.util.HashSet;
 
 public abstract class Index {
 	
-	private HashMap<Integer, HashMap<Integer, HashMap<Integer,Integer>>> index;
+	private HashMap<Integer, HashMap<Integer, HashSet<Integer>>> index;
 	
 	public Index() {
 		index = new HashMap<>();
 	}
 	
-	public HashMap<Integer, HashMap<Integer, HashMap<Integer,Integer>>> getIndex() {
+	public HashMap<Integer, HashMap<Integer, HashSet<Integer>>> getIndex() {
 		return index;
 	}
 	
@@ -20,16 +21,16 @@ public abstract class Index {
 	 * @param m Second Column
 	 * @return
 	 */
-	public HashMap<Integer,Integer> getThirdColumn(int n,int m){
+	public HashSet<Integer> getThirdColumn(int n,int m){
 		if(index.get(n)==null)
-			return null;
+			return new HashSet<Integer>();
 		else
 			return index.get(n).get(m);
 	}
 	
 	public int getStat(int n){
 		int res = 0;
-		for(HashMap<Integer,Integer> value: index.get(n).values()){
+		for(HashSet<Integer> value: index.get(n).values()){
 			res += value.size();
 		}
 		return res;

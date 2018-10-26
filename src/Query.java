@@ -11,7 +11,16 @@ public class Query {
 		private String sujet;
 		private String predicate;
 		private String object;
+		private int stat;
 		
+		public int getStat() {
+			return stat;
+		}
+
+		public void setStat(int stat) {
+			this.stat = stat;
+		}
+
 		public Triplet(String[] splitTriplet) {
 			this.sujet = splitTriplet[0].trim();
 			this.predicate = splitTriplet[1].trim();
@@ -67,6 +76,7 @@ public class Query {
         String condition = matchPattern.group(1);
         for(String triplet : condition.split(" \\.()+")) {
         	triplet.trim();
+        	triplet = triplet.replaceAll(">|<" ,"");
         	String[] splitTriplet = triplet.split(" ");
         	where.add(new Triplet(splitTriplet));
         }        

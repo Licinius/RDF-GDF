@@ -1,4 +1,7 @@
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Dictionnary {
 
@@ -28,7 +31,17 @@ public class Dictionnary {
 		}
 		return this;
 	}
+	public String getValue(int key) {
+		return dictionnary.get(key);
+	}
+	public int getValue(String key) {
+		return reverseDictionnary.get(key);
+	}
 	public String toString() {
 		return dictionnary.toString();
+	}
+
+	public List<String> translate(Set<Integer> keySet) {
+		return keySet.stream().map(key -> dictionnary.get(key)).collect(Collectors.toList());
 	}
 }

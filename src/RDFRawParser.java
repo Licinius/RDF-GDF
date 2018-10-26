@@ -105,9 +105,8 @@ public final class RDFRawParser {
 				e.printStackTrace();
 				System.exit(0);
 			}
-			for(Query.Triplet triplet : queries.get(0).getWhere()) {
-				System.out.println(triplet.getSujet() + " " + triplet.getPredicate() + " " + triplet.getObject());
-				System.out.println(triplet.getPredicate());
+			for(Query q : queries) {
+				System.out.println("---" +hexaStore.execute(q));
 			}
 			
 		}
