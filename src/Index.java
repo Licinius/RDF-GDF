@@ -1,15 +1,14 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Index {
 	
-	private HashMap<Integer, HashMap<Integer, ArrayList<Integer>>> index;
+	private HashMap<Integer, HashMap<Integer, HashMap<Integer,Integer>>> index;
 	
 	public Index() {
-		index = new HashMap<Integer, HashMap<Integer,  ArrayList<Integer>>>();
+		index = new HashMap<>();
 	}
 	
-	public HashMap<Integer, HashMap<Integer, ArrayList<Integer>>> getIndex() {
+	public HashMap<Integer, HashMap<Integer, HashMap<Integer,Integer>>> getIndex() {
 		return index;
 	}
 	
@@ -21,7 +20,7 @@ public abstract class Index {
 	 * @param m Second Column
 	 * @return
 	 */
-	public ArrayList<Integer> getThirdColumn(int n,int m){
+	public HashMap<Integer,Integer> getThirdColumn(int n,int m){
 		if(index.get(n)==null)
 			return null;
 		else
@@ -30,7 +29,7 @@ public abstract class Index {
 	
 	public int getStat(int n){
 		int res = 0;
-		for(ArrayList<Integer> value: index.get(n).values()){
+		for(HashMap<Integer,Integer> value: index.get(n).values()){
 			res += value.size();
 		}
 		return res;

@@ -80,20 +80,36 @@ public final class RDFRawParser {
 		}else {
 			Reader reader = new FileReader(FILEPATH_DATA);
 			RDFParser rdfParser = Rio.createParser(RDFFormat.RDFXML);
-			HexaStoreFactory hexaStoreFactory = new HexaStoreFactory();
-			rdfParser.setRDFHandler(hexaStoreFactory);
+			HexaStore hexaStore = new HexaStore();
+			rdfParser.setRDFHandler(hexaStore);
 			try {
 				rdfParser.parse(reader, "");
 			} catch (Exception e) {
-
+				e.printStackTrace();
+				System.exit(-1);
 			}
 			finally {
 				try {
 					reader.close();
 				} catch (IOException e) {
 					e.printStackTrace();
+					System.exit(0);
 				}
 			}
+			
+			//Parsing des queries
+			ArrayList<Query> queries = null;
+			try {
+				queries = new QueryParser(FILEPATH_QUERIES).parse();
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.exit(0);
+			}
+			for(Query.Triplet triplet : queries.get(0).getWhere()) {
+				System.out.println(triplet.getSujet() + " " + triplet.getPredicate() + " " + triplet.getObject());
+				System.out.println(triplet.getPredicate());
+			}
+			
 		}
 	}
 
