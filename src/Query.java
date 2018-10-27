@@ -58,7 +58,7 @@ public class Query {
 	}
 	private ArrayList<String> select;
 	private ArrayList<Triplet> where;
-	
+	private ArrayList<Triplet> whereOrdered;
 	/**
 	 * Crée une instance de query basé sur une string bien formaté de query rdf
 	 * @param query une chaine de préférence SELECT '[selection]' WHERE { [condition1] . [condition2]}  
@@ -75,10 +75,13 @@ public class Query {
         matchPattern.find();
         String condition = matchPattern.group(1);
         for(String triplet : condition.split(" \\.()+")) {
-        	triplet.trim();
-        	triplet = triplet.replaceAll(">|<" ,"");
-        	String[] splitTriplet = triplet.split(" ");
-        	where.add(new Triplet(splitTriplet));
+        	triplet = triplet.trim();
+        	if(!triplet.isEmpty()) {
+            	triplet = triplet.replaceAll(">|<" ,"");
+            	String[] splitTriplet = triplet.split(" ");
+            	where.add(new Triplet(splitTriplet));
+        	}
+
         }        
 	}
 	
@@ -96,7 +99,14 @@ public class Query {
 	public List<Triplet> getWhere() {
 		return Collections.unmodifiableList(where);
 	}
-
+	
+	public void setOrderedWhere(ArrayList<Triplet> whereOrdered) {
+		this.whereOrdered = whereOrdered;
+	}
+	
+	public List<Triplet> getOrderedWhere(){
+		return this.whereOrdered;
+	}
 	public String toString() {
 		String res = "Select "+ String.join(",", select) + " WHERE {";
 		res += where.stream()

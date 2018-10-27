@@ -34,8 +34,13 @@ public class Dictionnary {
 	public String getValue(int key) {
 		return dictionnary.get(key);
 	}
+	/**
+	 * Retourne la valeur trouvé dans le dictionnaire inversé ou -1 
+	 * @param key la cléf à rechercher
+	 * @return la valeur trouvé ou -1
+	 */
 	public int getValue(String key) {
-		return reverseDictionnary.get(key);
+		return reverseDictionnary.getOrDefault(key, -1);
 	}
 	public String toString() {
 		return dictionnary.toString();

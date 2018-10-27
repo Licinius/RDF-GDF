@@ -1,8 +1,16 @@
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.DirectoryIteratorException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,23 +45,31 @@ public final class RDFRawParser {
 		if(arrayArgs.contains(ARG_HELP)) {
 			return true;
 		}
-		
 		int indexQueries = arrayArgs.indexOf(ARG_QUERIES);
 		FILEPATH_QUERIES = arrayArgs.get(indexQueries+1);
-		if(indexQueries<0 || !new File(FILEPATH_QUERIES).exists()) 
+		if(indexQueries<0 || !new File(FILEPATH_QUERIES).isDirectory()) {
 			return true;
+		}
+		int indexData = arrayArgs.indexOf(ARG_DATA);
+		FILEPATH_DATA =  arrayArgs.get(indexData+1);
+		if(indexData<0 || !new File(FILEPATH_DATA).exists()) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static void setFilepath (List<String> arrayArgs){
+		int indexQueries = arrayArgs.indexOf(ARG_QUERIES);
+		FILEPATH_QUERIES = arrayArgs.get(indexQueries+1);
 		
 		int indexData = arrayArgs.indexOf(ARG_DATA);
 		FILEPATH_DATA =  arrayArgs.get(indexData+1);
-		if(indexData<0 || !new File(arrayArgs.get(indexData+1)).exists())
-			return true;
 		
 		int indexOutput = arrayArgs.indexOf(ARG_OUTPUT);
-		FILEPATH_DATA =  arrayArgs.get(indexOutput+1);
-		if(indexOutput<0 || !new File(arrayArgs.get(indexOutput+1)).exists())
-			return true;
-		return false;
+		if(indexOutput<0 || new File(arrayArgs.get(indexOutput+1)).isDirectory())
+			FILEPATH_OUTPUT =  arrayArgs.get(indexOutput+1);
 	}
+	
 	public static void main(String args[]) throws FileNotFoundException {
 		//Arguments 
 		List<String> arrayArgs = Collections.unmodifiableList(Arrays.asList(args));
@@ -78,6 +94,7 @@ public final class RDFRawParser {
 			System.out.println(helpMessage);
 			System.exit(0);
 		}else {
+			setFilepath(arrayArgs);
 			Reader reader = new FileReader(FILEPATH_DATA);
 			RDFParser rdfParser = Rio.createParser(RDFFormat.RDFXML);
 			HexaStore hexaStore = new HexaStore();
@@ -98,18 +115,77 @@ public final class RDFRawParser {
 			}
 			
 			//Parsing des queries
-			ArrayList<Query> queries = null;
-			try {
-				queries = new QueryParser(FILEPATH_QUERIES).parse();
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(0);
-			}
-			for(Query q : queries) {
-				System.out.println("---" +hexaStore.execute(q));
+			ArrayList<Query> queries = new ArrayList<Query>();
+			Path dir = FileSystems.getDefault().getPath(FILEPATH_QUERIES);
+			boolean isEmpty = false;
+			try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
+				long totalTime = 0;
+			    for (Path file: stream) {
+			    	queries = new QueryParser(file.toAbsolutePath().toString()).parse();
+			    	long startTime = System.currentTimeMillis();
+	    		    List<List<String>>result = hexaStore.execute(queries); //Execute toutes les queries du document
+	    		    long endTime = System.currentTimeMillis();
+	    		    if(verbose) {
+				    	System.out.println(file.toAbsolutePath().toString());
+				    	totalTime += endTime-startTime;
+		    		    System.out.println("Temps écoulé : "+ (endTime-startTime) + "ms");
+	    		    }
+	    		    if(exportStats) {
+	    		    	isEmpty = exportStats(queries, isEmpty);
+	    		    }
+	    		    if(exportResults) {
+	    		    	//TODO 
+	    		    }
+			    	queries.clear();
+			    }
+			    if(workloadTime) {
+			    	System.out.println("Temps total : " + totalTime + "ms");
+			    }
+			} catch (IOException | DirectoryIteratorException e) {
+			    System.err.println(e);
+			    System.exit(-1);
 			}
 			
+			
 		}
+	}
+	/**
+	 * Export les statistiques réalisé sur les querys 
+	 * @param queries Les query qui seront exporté dans le fichier exportStats.csv
+	 * @param isEmpty si le fichier est vide (le début)
+	 * @return return true if the file is not empty anymore
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
+	private static boolean exportStats(ArrayList<Query> queries, boolean isEmpty)
+			throws IOException, FileNotFoundException {
+		File yourFile = new File(FILEPATH_OUTPUT + File.separator +"exportStats.csv");
+		yourFile.createNewFile(); // if file already exists will do nothing
+		FileOutputStream oFile = new FileOutputStream(yourFile, isEmpty);
+		BufferedOutputStream bos = new BufferedOutputStream(oFile);
+		if(!isEmpty) {
+			String header = "Requete;Triplet_1;Triplet_2;Triplet_3;Estimation_1;Estimation_2;Estimation_3" +System.lineSeparator();
+			bos.write(header.getBytes());
+			isEmpty = true;
+		}
+		for(Query query : queries) {
+			String queryString = query +";";
+			bos.write(queryString.getBytes());
+			for(int i=0; i<3;i++) {
+				if(i < query.getOrderedWhere().size())
+					bos.write(query.getOrderedWhere().get(i).toString().getBytes());
+				bos.write(";".getBytes());
+			}
+			for(int i=0; i<3;i++) {
+				if(i < query.getOrderedWhere().size())
+					bos.write(Integer.toString(query.getOrderedWhere().get(i).getStat()).getBytes());
+				bos.write(";".getBytes());
+			}
+			bos.write(System.lineSeparator().getBytes());
+		}
+		bos.close();
+		oFile.close();
+		return isEmpty;
 	}
 
 }

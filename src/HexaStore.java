@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -50,20 +51,33 @@ public class HexaStore extends RDFHandlerBase{
 		OPSIndex.addElement(s, p, o);
 	}
 	
-	
+	public List<List<String>> execute(List<Query> queries){
+		List<List<String>> res = new ArrayList<List<String>>();
+		for(Query query : queries) {
+			res.add(this.execute(query));
+		}
+		return res;
+	}
+	/**
+	 * Initialise les statistiques des triplets de la liste afin de les trier
+	 * @param triplets
+	 */
+	public void setStats(List<Query.Triplet> triplets) {
+		for(Query.Triplet triplet:triplets) {
+			int tripletPredicate = dictionnary.getValue(triplet.getPredicate());
+			int tripletObject = dictionnary.getValue(triplet.getObject());
+			triplet.setStat(POSIndex.getStat(tripletPredicate,tripletObject));
+		}
+	}
 	public List<String> execute(Query query){
 		ArrayList<Query.Triplet> triplets = new ArrayList<>(query.getWhere());
+		this.setStats(triplets);
 		Collections.sort(triplets,new Comparator<Query.Triplet>() {
 			public int compare(Query.Triplet o1, Query.Triplet o2) {
-				int o1Predicate = dictionnary.getValue(o1.getPredicate());
-				int o1Object = dictionnary.getValue(o1.getObject());
-				int o2Predicate = dictionnary.getValue(o2.getPredicate());
-				int o2Object = dictionnary.getValue(o2.getObject());
-				o1.setStat(POSIndex.getStat(o1Predicate,o1Object));
-				o2.setStat(POSIndex.getStat(o2Predicate,o2Object));
 				return  o1.getStat()- o2.getStat();
 			}
 		});
+		query.setOrderedWhere(triplets);
 		if(triplets.get(0).getStat()==0) { //Si il y a pas de concordance
 			return new ArrayList<String>();
 		}else {
