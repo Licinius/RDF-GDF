@@ -10,11 +10,11 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import org.openrdf.rio.RDFFormat;
@@ -117,25 +117,29 @@ public final class RDFRawParser {
 			//Parsing des queries
 			ArrayList<Query> queries = new ArrayList<Query>();
 			Path dir = FileSystems.getDefault().getPath(FILEPATH_QUERIES);
-			boolean isEmpty = false;
+			boolean isEmptyStats = false;
+			boolean isEmptyResults = false;
 			try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
 				long totalTime = 0;
 			    for (Path file: stream) {
 			    	queries = new QueryParser(file.toAbsolutePath().toString()).parse();
 			    	long startTime = System.currentTimeMillis();
-	    		    List<List<String>>result = hexaStore.execute(queries); //Execute toutes les queries du document
+	    		    HashMap<Query,List<String>> result = hexaStore.execute(queries); //Execute toutes les queries du document
 	    		    long endTime = System.currentTimeMillis();
 	    		    if(verbose) {
 				    	System.out.println(file.toAbsolutePath().toString());
 				    	totalTime += endTime-startTime;
 		    		    System.out.println("Temps écoulé : "+ (endTime-startTime) + "ms");
 	    		    }
-	    		    if(exportStats) {
-	    		    	isEmpty = exportStats(queries, isEmpty);
+	    		    if(!FILEPATH_OUTPUT.isBlank()) {
+		    		    if(exportStats) {
+		    		    	isEmptyStats = exportStats(queries, isEmptyStats);
+		    		    }
+		    		    if(exportResults) {
+		    		    	isEmptyResults = exportResult(result,isEmptyResults);
+		    		    }
 	    		    }
-	    		    if(exportResults) {
-	    		    	//TODO 
-	    		    }
+
 			    	queries.clear();
 			    }
 			    if(workloadTime) {
@@ -149,6 +153,31 @@ public final class RDFRawParser {
 			
 		}
 	}
+	private static boolean exportResult(HashMap<Query, List<String>> result, boolean isEmpty) throws IOException {
+		File yourFile = new File(FILEPATH_OUTPUT + File.separator +"exportResults.csv");
+		yourFile.createNewFile(); // if file already exists will do nothing
+		FileOutputStream oFile = new FileOutputStream(yourFile, isEmpty);
+		BufferedOutputStream bos = new BufferedOutputStream(oFile);
+		if(!isEmpty) {
+			String header = "Requete;Resultats" +System.lineSeparator();
+			bos.write(header.getBytes());
+			isEmpty = true;
+		}
+		String queryString, resultString;
+		for(Query query : result.keySet()) {
+			queryString= query.toString() +";";
+			bos.write(queryString.getBytes());
+			for(String res : result.get(query)) {
+				resultString = res + ";";
+				bos.write(resultString.getBytes());
+			}
+			bos.write(System.lineSeparator().getBytes());
+		}
+		bos.close();
+		oFile.close();
+		return isEmpty;
+	}
+
 	/**
 	 * Export les statistiques réalisé sur les querys 
 	 * @param queries Les query qui seront exporté dans le fichier exportStats.csv
@@ -158,7 +187,7 @@ public final class RDFRawParser {
 	 * @throws FileNotFoundException
 	 */
 	private static boolean exportStats(ArrayList<Query> queries, boolean isEmpty)
-			throws IOException, FileNotFoundException {
+			throws IOException {
 		File yourFile = new File(FILEPATH_OUTPUT + File.separator +"exportStats.csv");
 		yourFile.createNewFile(); // if file already exists will do nothing
 		FileOutputStream oFile = new FileOutputStream(yourFile, isEmpty);
@@ -169,7 +198,7 @@ public final class RDFRawParser {
 			isEmpty = true;
 		}
 		for(Query query : queries) {
-			String queryString = query +";";
+			String queryString = query.toString() +";";
 			bos.write(queryString.getBytes());
 			for(int i=0; i<3;i++) {
 				if(i < query.getOrderedWhere().size())

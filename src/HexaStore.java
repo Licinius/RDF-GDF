@@ -1,7 +1,7 @@
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -51,10 +51,10 @@ public class HexaStore extends RDFHandlerBase{
 		OPSIndex.addElement(s, p, o);
 	}
 	
-	public List<List<String>> execute(List<Query> queries){
-		List<List<String>> res = new ArrayList<List<String>>();
+	public HashMap<Query,List<String>> execute(List<Query> queries){
+		HashMap<Query,List<String>> res = new HashMap<>();
 		for(Query query : queries) {
-			res.add(this.execute(query));
+			res.put(query,this.execute(query));
 		}
 		return res;
 	}
