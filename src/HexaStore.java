@@ -91,7 +91,7 @@ public class HexaStore extends RDFHandlerBase{
 				intermediateResult.retainAll(tmpHashSet);
 
 			}
-			return dictionnary.translate(intermediateResult);
+			return dictionnary.getValues(intermediateResult);
 		}
 		
 		

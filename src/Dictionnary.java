@@ -36,7 +36,7 @@ public class Dictionnary {
 	}
 	/**
 	 * Retourne la valeur trouvé dans le dictionnaire inversé ou -1 
-	 * @param key la cléf à rechercher
+	 * @param key la clef à rechercher
 	 * @return la valeur trouvé ou -1
 	 */
 	public int getValue(String key) {
@@ -46,7 +46,7 @@ public class Dictionnary {
 		return dictionnary.toString();
 	}
 
-	public List<String> translate(Set<Integer> keySet) {
+	public List<String> getValues(Set<Integer> keySet) {
 		return keySet.stream().map(key -> dictionnary.get(key)).collect(Collectors.toList());
 	}
 }
