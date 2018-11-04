@@ -3,16 +3,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Dictionnary {
+public class Dictionary {
 
 	private HashMap <Integer, String> dictionnary;
-	private HashMap <String,Integer> reverseDictionnary;
+	private HashMap <String,Integer> reverseDictionary;
 	private int wordCounter;
 	
-	public Dictionnary() {
+	public Dictionary() {
 		super();
 		dictionnary = new HashMap<Integer, String>();
-		reverseDictionnary = new HashMap<String, Integer>();
+		reverseDictionary = new HashMap<String, Integer>();
 		wordCounter = 0;
 	}
 
@@ -20,13 +20,13 @@ public class Dictionnary {
 		return dictionnary;
 	}
 	public HashMap<String, Integer> getReverseDictionnary() {
-		return reverseDictionnary;
+		return reverseDictionary;
 	}
 	
-	public Dictionnary put(String word) {
-		if(!reverseDictionnary.containsKey(word)) {
+	public Dictionary put(String word) {
+		if(!reverseDictionary.containsKey(word)) {
 			wordCounter +=1;
-			reverseDictionnary.put(word, wordCounter);
+			reverseDictionary.put(word, wordCounter);
 			dictionnary.put(wordCounter,word);
 		}
 		return this;
@@ -40,7 +40,7 @@ public class Dictionnary {
 	 * @return la valeur trouvé ou -1
 	 */
 	public int getValue(String key) {
-		return reverseDictionnary.getOrDefault(key, -1);
+		return reverseDictionary.getOrDefault(key, -1);
 	}
 	public String toString() {
 		return dictionnary.toString();

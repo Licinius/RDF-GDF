@@ -10,12 +10,12 @@ import org.openrdf.rio.helpers.RDFHandlerBase;
 
 public class HexaStore extends RDFHandlerBase{
 
-	private Dictionnary dictionnary;
+	private Dictionary dictionary;
 	private POS POSIndex;
 	private OPS OPSIndex;
 	
 	public HexaStore() {
-		this.dictionnary = new Dictionnary();
+		this.dictionary = new Dictionary();
 		POSIndex = new POS();
 		OPSIndex = new OPS();
 	}
@@ -34,7 +34,7 @@ public class HexaStore extends RDFHandlerBase{
 		String subject = st.getSubject().toString();
 		String predicate = st.getPredicate().toString();
 		String object = st.getObject().toString();
-		dictionnary.put(subject)
+		dictionary.put(subject)
 				.put(predicate)
 				.put(object);
 	}
@@ -43,9 +43,9 @@ public class HexaStore extends RDFHandlerBase{
 	 * @param st 
 	 */
 	private void addToIndexes(Statement st) {
-		int s = dictionnary.getReverseDictionnary().get(st.getSubject().toString());
-		int p = dictionnary.getReverseDictionnary().get(st.getPredicate().toString());
-		int o = dictionnary.getReverseDictionnary().get(st.getObject().toString());
+		int s = dictionary.getReverseDictionnary().get(st.getSubject().toString());
+		int p = dictionary.getReverseDictionnary().get(st.getPredicate().toString());
+		int o = dictionary.getReverseDictionnary().get(st.getObject().toString());
 
 		POSIndex.addElement(s, p, o);
 		OPSIndex.addElement(s, p, o);
@@ -64,8 +64,8 @@ public class HexaStore extends RDFHandlerBase{
 	 */
 	public void setStats(List<Query.Triplet> triplets) {
 		for(Query.Triplet triplet:triplets) {
-			int tripletPredicate = dictionnary.getValue(triplet.getPredicate());
-			int tripletObject = dictionnary.getValue(triplet.getObject());
+			int tripletPredicate = dictionary.getValue(triplet.getPredicate());
+			int tripletObject = dictionary.getValue(triplet.getObject());
 			triplet.setStat(POSIndex.getStat(tripletPredicate,tripletObject));
 		}
 	}
@@ -91,20 +91,20 @@ public class HexaStore extends RDFHandlerBase{
 				intermediateResult.retainAll(tmpHashSet);
 
 			}
-			return dictionnary.getValues(intermediateResult);
+			return dictionary.getValues(intermediateResult);
 		}
 		
 		
 	}
 	
 	public HashSet<Integer> execute(Query.Triplet triplet){
-		int tripletPredicate = dictionnary.getValue(triplet.getPredicate());
-		int tripletObject = dictionnary.getValue(triplet.getObject());
+		int tripletPredicate = dictionary.getValue(triplet.getPredicate());
+		int tripletObject = dictionary.getValue(triplet.getObject());
 		return POSIndex.getThirdColumn(tripletPredicate, tripletObject);
 	}
 	
-	public Dictionnary getDictionnary() {
-		return dictionnary;
+	public Dictionary getDictionnary() {
+		return dictionary;
 	}
 	public Index getPOS() {
 		return POSIndex;
