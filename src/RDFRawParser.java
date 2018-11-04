@@ -119,6 +119,7 @@ public final class RDFRawParser {
 			Path dir = FileSystems.getDefault().getPath(FILEPATH_QUERIES);
 			boolean isEmptyStats = false;
 			boolean isEmptyResults = false;
+			boolean isEmptyExecution = false;
 			try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
 				long totalTime = 0;
 			    for (Path file: stream) {
@@ -127,9 +128,12 @@ public final class RDFRawParser {
 	    		    HashMap<Query,List<String>> result = hexaStore.execute(queries); //Execute toutes les queries du document
 	    		    long endTime = System.currentTimeMillis();
 	    		    if(verbose) {
-				    	System.out.println(file.toAbsolutePath().toString());
-				    	totalTime += endTime-startTime;
+	    		    	String path = file.toAbsolutePath().toString();
+				    	System.out.println(path);
+				    	long timeQueries = endTime-startTime;
+				    	totalTime += timeQueries;
 		    		    System.out.println("Temps écoulé : "+ (endTime-startTime) + "ms");
+	    		    	isEmptyExecution = exportExecutionTime(path,timeQueries, isEmptyExecution);
 	    		    }
 	    		    if(!FILEPATH_OUTPUT.isBlank()) {
 		    		    if(exportStats) {
@@ -153,6 +157,22 @@ public final class RDFRawParser {
 			
 		}
 	}
+	private static boolean exportExecutionTime(String path, long timeQueries, boolean isEmptyExecution) throws IOException {
+		File yourFile = new File(FILEPATH_OUTPUT + File.separator +"exportExecutionTime.csv");
+		yourFile.createNewFile(); // if file already exists will do nothing
+		FileOutputStream oFile = new FileOutputStream(yourFile, isEmptyExecution);
+		BufferedOutputStream bos = new BufferedOutputStream(oFile);
+		if(!isEmptyExecution) {
+			String header = "Requete;Execution Time(ms)" +System.lineSeparator();
+			bos.write(header.getBytes());
+			isEmptyExecution = true;
+		}
+		bos.write((path + ";" + timeQueries+System.lineSeparator()).getBytes());
+		bos.close();
+		oFile.close();
+		return isEmptyExecution;
+	}
+
 	private static boolean exportResult(HashMap<Query, List<String>> result, boolean isEmpty) throws IOException {
 		File yourFile = new File(FILEPATH_OUTPUT + File.separator +"exportResults.csv");
 		yourFile.createNewFile(); // if file already exists will do nothing
