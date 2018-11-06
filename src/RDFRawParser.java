@@ -71,6 +71,9 @@ public final class RDFRawParser {
 	}
 	
 	public static void main(String args[]) throws FileNotFoundException {
+		if(args.length==0) {
+			displayHelpMessage();
+		}
 		//Arguments 
 		List<String> arrayArgs = Collections.unmodifiableList(Arrays.asList(args));
 		//-verbose
@@ -83,16 +86,7 @@ public final class RDFRawParser {
 		boolean workloadTime = arrayArgs.contains(ARG_WORKLOAD_TIME);
 		
 		if(invalidArguments(arrayArgs)) {
-			String helpMessage = MessageFormat.format("java -jar "+System.getProperty("java.class.path")+ System.lineSeparator()
-					+ "-queries \"{0}chemin{0}vers{0}requetes\"" + System.lineSeparator()
-					+ "-data \"{0}chemin{0}vers{0}donnees\"" + System.lineSeparator()
-					+ "-output \"{0}chemin{0}vers{0}dossier{0}sortie\"" + System.lineSeparator()
-					+ "-verbose" + System.lineSeparator()
-					+ "-export_results" + System.lineSeparator()
-					+ "-export_stats" + System.lineSeparator()
-					+ "-workload_time", File.separator);
-			System.out.println(helpMessage);
-			System.exit(0);
+			displayHelpMessage();
 		}else {
 			setFilepath(arrayArgs);
 			Reader reader = new FileReader(FILEPATH_DATA);
@@ -127,12 +121,12 @@ public final class RDFRawParser {
 			    	long startTime = System.currentTimeMillis();
 	    		    HashMap<Query,List<String>> result = hexaStore.execute(queries); //Execute toutes les queries du document
 	    		    long endTime = System.currentTimeMillis();
+	    		    long timeQueries = endTime-startTime;
+			    	totalTime += timeQueries;
 	    		    if(verbose) {
 	    		    	String path = file.toAbsolutePath().toString();
 				    	System.out.println(path);
-				    	long timeQueries = endTime-startTime;
-				    	totalTime += timeQueries;
-		    		    System.out.println("Temps ï¿½coulï¿½ : "+ (endTime-startTime) + "ms");
+		    		    System.out.println("Temps écoulé : "+ (endTime-startTime) + "ms");
 	    		    	isEmptyExecution = exportExecutionTime(path,timeQueries, isEmptyExecution);
 	    		    }
 	    		    if(!FILEPATH_OUTPUT.isEmpty()) {
@@ -143,7 +137,6 @@ public final class RDFRawParser {
 		    		    	isEmptyResults = exportResult(result,isEmptyResults);
 		    		    }
 	    		    }
-
 			    	queries.clear();
 			    }
 			    if(workloadTime) {
@@ -156,6 +149,19 @@ public final class RDFRawParser {
 			
 			
 		}
+	}
+
+	private static void displayHelpMessage() {
+		String helpMessage = MessageFormat.format("java -jar "+System.getProperty("java.class.path")+ System.lineSeparator()
+				+ "-queries \"{0}chemin{0}vers{0}requetes\"" + System.lineSeparator()
+				+ "-data \"{0}chemin{0}vers{0}donnees\"" + System.lineSeparator()
+				+ "-output \"{0}chemin{0}vers{0}dossier{0}sortie\"" + System.lineSeparator()
+				+ "-verbose" + System.lineSeparator()
+				+ "-export_results" + System.lineSeparator()
+				+ "-export_stats" + System.lineSeparator()
+				+ "-workload_time", File.separator);
+		System.out.println(helpMessage);
+		System.exit(0);
 	}
 	private static boolean exportExecutionTime(String path, long timeQueries, boolean isEmptyExecution) throws IOException {
 		File yourFile = new File(FILEPATH_OUTPUT + File.separator +"exportExecutionTime.csv");

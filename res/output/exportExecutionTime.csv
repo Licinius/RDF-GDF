@@ -1,13 +1,13 @@
 Requete;Execution Time(ms)
-/auto_home/fdellomo/git/RDF-GDF/res/queries/Q_1_includes.queryset;50
-/auto_home/fdellomo/git/RDF-GDF/res/queries/Q_2_likes_nationality.queryset;4
-/auto_home/fdellomo/git/RDF-GDF/res/queries/Q_1_nationality.queryset;2
-/auto_home/fdellomo/git/RDF-GDF/res/queries/Q_1_eligibleregion.queryset;1
-/auto_home/fdellomo/git/RDF-GDF/res/queries/Q_2_subscribes_likes.queryset;2
-/auto_home/fdellomo/git/RDF-GDF/res/queries/Q_1_likes.queryset;1
-/auto_home/fdellomo/git/RDF-GDF/res/queries/Q_3_location_gender_type.queryset;15
-/auto_home/fdellomo/git/RDF-GDF/res/queries/Q_4_location_nationality_gender_type.queryset;5
-/auto_home/fdellomo/git/RDF-GDF/res/queries/Q_3_location_nationality_gender.queryset;4
-/auto_home/fdellomo/git/RDF-GDF/res/queries/Q_1_subscribes.queryset;2
-/auto_home/fdellomo/git/RDF-GDF/res/queries/Q_2_tag_homepage.queryset;0
-/auto_home/fdellomo/git/RDF-GDF/res/queries/Q_3_nationality_gender_type.queryset;11
+C:\Users\Marvin\git\RDF-GDF\res\queries\Q_1_eligibleregion.queryset;10
+C:\Users\Marvin\git\RDF-GDF\res\queries\Q_1_includes.queryset;1
+C:\Users\Marvin\git\RDF-GDF\res\queries\Q_1_likes.queryset;5
+C:\Users\Marvin\git\RDF-GDF\res\queries\Q_1_nationality.queryset;1
+C:\Users\Marvin\git\RDF-GDF\res\queries\Q_1_subscribes.queryset;1
+C:\Users\Marvin\git\RDF-GDF\res\queries\Q_2_likes_nationality.queryset;2
+C:\Users\Marvin\git\RDF-GDF\res\queries\Q_2_subscribes_likes.queryset;1
+C:\Users\Marvin\git\RDF-GDF\res\queries\Q_2_tag_homepage.queryset;1
+C:\Users\Marvin\git\RDF-GDF\res\queries\Q_3_location_gender_type.queryset;50
+C:\Users\Marvin\git\RDF-GDF\res\queries\Q_3_location_nationality_gender.queryset;5
+C:\Users\Marvin\git\RDF-GDF\res\queries\Q_3_nationality_gender_type.queryset;11
+C:\Users\Marvin\git\RDF-GDF\res\queries\Q_4_location_nationality_gender_type.queryset;4
