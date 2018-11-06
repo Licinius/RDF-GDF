@@ -3,6 +3,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.openrdf.model.Statement;
@@ -51,8 +52,8 @@ public class HexaStore extends RDFHandlerBase{
 		OPSIndex.addElement(s, p, o);
 	}
 	
-	public HashMap<Query,List<String>> execute(List<Query> queries){
-		HashMap<Query,List<String>> res = new HashMap<>();
+	public LinkedHashMap<Query ,List<String>> execute(List<Query> queries){
+		LinkedHashMap<Query,List<String>> res = new LinkedHashMap<>();
 		for(Query query : queries) {
 			res.put(query,this.execute(query));
 		}

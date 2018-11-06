@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.openrdf.rio.RDFFormat;
@@ -119,7 +120,7 @@ public final class RDFRawParser {
 			    for (Path file: stream) {
 			    	queries = new QueryParser(file.toAbsolutePath().toString()).parse();
 			    	long startTime = System.currentTimeMillis();
-	    		    HashMap<Query,List<String>> result = hexaStore.execute(queries); //Execute toutes les queries du document
+			    	LinkedHashMap<Query,List<String>> result = hexaStore.execute(queries); //Execute toutes les queries du document
 	    		    long endTime = System.currentTimeMillis();
 	    		    long timeQueries = endTime-startTime;
 			    	totalTime += timeQueries;
@@ -179,7 +180,7 @@ public final class RDFRawParser {
 		return isEmptyExecution;
 	}
 
-	private static boolean exportResult(HashMap<Query, List<String>> result, boolean isEmpty) throws IOException {
+	private static boolean exportResult(LinkedHashMap<Query, List<String>> result, boolean isEmpty) throws IOException {
 		File yourFile = new File(FILEPATH_OUTPUT + File.separator +"exportResults.csv");
 		yourFile.createNewFile(); // if file already exists will do nothing
 		FileOutputStream oFile = new FileOutputStream(yourFile, isEmpty);
