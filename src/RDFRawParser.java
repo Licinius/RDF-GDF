@@ -137,7 +137,7 @@ public final class RDFRawParser {
 	    		    }
 	    		    if(!FILEPATH_OUTPUT.isEmpty()) {
 		    		    if(exportStats) {
-		    		    	isEmptyStats = exportStats(queries, isEmptyStats);
+		    		    	isEmptyStats = exportStats(new ArrayList<Query>(result.keySet()), isEmptyStats);
 		    		    }
 		    		    if(exportResults) {
 		    		    	isEmptyResults = exportResult(result,isEmptyResults);
@@ -213,7 +213,7 @@ public final class RDFRawParser {
 		FileOutputStream oFile = new FileOutputStream(yourFile, isEmpty);
 		BufferedOutputStream bos = new BufferedOutputStream(oFile);
 		if(!isEmpty) {
-			String header = "Requete;Triplet_1;Triplet_2;Triplet_3;Triplet_4Estimation_1;Estimation_2;Estimation_3;Estimation_4" +System.lineSeparator();
+			String header = "Requete;Triplet_1;Triplet_2;Triplet_3;Triplet_4;Estimation_1;Estimation_2;Estimation_3;Estimation_4" +System.lineSeparator();
 			bos.write(header.getBytes());
 			isEmpty = true;
 		}

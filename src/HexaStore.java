@@ -1,11 +1,9 @@
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.openrdf.model.Statement;
 import org.openrdf.rio.helpers.RDFHandlerBase;
@@ -15,7 +13,6 @@ public class HexaStore extends RDFHandlerBase{
 	private Dictionary dictionary;
 	private POS POSIndex;
 	private OPS OPSIndex;
-	public static int queryCount = 0;
 	
 	public HexaStore() {
 		this.dictionary = new Dictionary();
@@ -73,8 +70,6 @@ public class HexaStore extends RDFHandlerBase{
 		}
 	}
 	public List<String> execute(Query query){
-
-		queryCount++;
 		ArrayList<Query.Triplet> triplets = new ArrayList<>(query.getWhere());
 		this.setStats(triplets);
 		Collections.sort(triplets,new Comparator<Query.Triplet>() {
@@ -88,16 +83,12 @@ public class HexaStore extends RDFHandlerBase{
 		}else {
 			HashSet<Integer> intermediateResult = this.execute(triplets.get(0));			
 			HashSet<Integer> tmpHashSet;
-			ArrayList<ArrayList<Integer>> lists = new ArrayList<>();
-			lists.add(new ArrayList<Integer>(intermediateResult));
 			for(int i = 1; i < triplets.size() ;i++) {
 				if(intermediateResult.size() == 0) {
 					return new ArrayList<String>();
 				}
 				tmpHashSet = this.execute(triplets.get(i));
 				intermediateResult.retainAll(tmpHashSet);
-				lists.add(new ArrayList<Integer>(tmpHashSet));
-
 			}
 			return dictionary.getValues(intermediateResult);
 		}
