@@ -132,10 +132,10 @@ public final class RDFRawParser {
 				    	System.out.println(path);
 				    	long timeQueries = endTime-startTime;
 				    	totalTime += timeQueries;
-		    		    System.out.println("Temps écoulé : "+ (endTime-startTime) + "ms");
+		    		    System.out.println("Temps ï¿½coulï¿½ : "+ (endTime-startTime) + "ms");
 	    		    	isEmptyExecution = exportExecutionTime(path,timeQueries, isEmptyExecution);
 	    		    }
-	    		    if(!FILEPATH_OUTPUT.isBlank()) {
+	    		    if(!FILEPATH_OUTPUT.isEmpty()) {
 		    		    if(exportStats) {
 		    		    	isEmptyStats = exportStats(queries, isEmptyStats);
 		    		    }
@@ -199,9 +199,9 @@ public final class RDFRawParser {
 	}
 
 	/**
-	 * Export les statistiques réalisé sur les querys 
-	 * @param queries Les query qui seront exporté dans le fichier exportStats.csv
-	 * @param isEmpty si le fichier est vide (le début)
+	 * Export les statistiques rï¿½alisï¿½ sur les querys 
+	 * @param queries Les query qui seront exportï¿½ dans le fichier exportStats.csv
+	 * @param isEmpty si le fichier est vide (le dï¿½but)
 	 * @return return true if the file is not empty anymore
 	 * @throws IOException
 	 * @throws FileNotFoundException
@@ -213,19 +213,19 @@ public final class RDFRawParser {
 		FileOutputStream oFile = new FileOutputStream(yourFile, isEmpty);
 		BufferedOutputStream bos = new BufferedOutputStream(oFile);
 		if(!isEmpty) {
-			String header = "Requete;Triplet_1;Triplet_2;Triplet_3;Estimation_1;Estimation_2;Estimation_3" +System.lineSeparator();
+			String header = "Requete;Triplet_1;Triplet_2;Triplet_3;Triplet_4Estimation_1;Estimation_2;Estimation_3;Estimation_4" +System.lineSeparator();
 			bos.write(header.getBytes());
 			isEmpty = true;
 		}
 		for(Query query : queries) {
 			String queryString = query.toString() +";";
 			bos.write(queryString.getBytes());
-			for(int i=0; i<3;i++) {
+			for(int i=0; i<4;i++) {
 				if(i < query.getOrderedWhere().size())
 					bos.write(query.getOrderedWhere().get(i).toString().getBytes());
 				bos.write(";".getBytes());
 			}
-			for(int i=0; i<3;i++) {
+			for(int i=0; i<4;i++) {
 				if(i < query.getOrderedWhere().size())
 					bos.write(Integer.toString(query.getOrderedWhere().get(i).getStat()).getBytes());
 				bos.write(";".getBytes());
