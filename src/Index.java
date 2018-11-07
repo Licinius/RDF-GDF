@@ -22,10 +22,12 @@ public abstract class Index {
 	 * @return
 	 */
 	public HashSet<Integer> getThirdColumn(int n,int m){
-		if(index.get(n)==null)
+		if(index.get(n)==null || index.get(n).get(m)==null)
 			return new HashSet<Integer>();
-		else
+		else {
 			return index.get(n).get(m);
+		}
+
 	}
 	
 	public int getStat(int n){
@@ -41,7 +43,8 @@ public abstract class Index {
 			return 0;
 		else if(getThirdColumn(n, m)==null)
 			return 0;
-		return getThirdColumn(n,m).size();
+		else
+			return getThirdColumn(n,m).size();
 		
 	}
 	

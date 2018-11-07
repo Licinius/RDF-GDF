@@ -36,8 +36,8 @@ public class HexaStore extends RDFHandlerBase{
 		String predicate = st.getPredicate().toString();
 		String object = st.getObject().toString();
 		dictionary.put(subject)
-				.put(predicate)
-				.put(object);
+				  .put(predicate)
+				  .put(object);
 	}
 	/**
 	 * Ajoute les mots du tripl� RDF aux indexes
@@ -93,8 +93,7 @@ public class HexaStore extends RDFHandlerBase{
 			}
 			return dictionary.getValues(intermediateResult);
 		}
-		
-		
+
 	}
 	
 	public HashSet<Integer> execute(Query.Triplet triplet){

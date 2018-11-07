@@ -71,7 +71,7 @@ public final class RDFRawParser {
 			FILEPATH_OUTPUT =  arrayArgs.get(indexOutput+1);
 	}
 	
-	public static void main(String args[]) throws FileNotFoundException {
+	public static void main(String args[]) throws FileNotFoundException, InterruptedException {
 		if(args.length==0) {
 			displayHelpMessage();
 		}
@@ -117,18 +117,29 @@ public final class RDFRawParser {
 			boolean isEmptyExecution = false;
 			try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
 				long totalTime = 0;
+				HashMap<Thread, ThreadFile> mapThread = new HashMap<Thread, ThreadFile>();
+				
 			    for (Path file: stream) {
-			    	queries = new QueryParser(file.toAbsolutePath().toString()).parse();
-			    	long startTime = System.currentTimeMillis();
-			    	LinkedHashMap<Query,List<String>> result = hexaStore.execute(queries); //Execute toutes les queries du document
-	    		    long endTime = System.currentTimeMillis();
-	    		    long timeQueries = endTime-startTime;
-			    	totalTime += timeQueries;
+			    	String path = file.toAbsolutePath().toString();
+			    	ThreadFile tf = new ThreadFile(hexaStore, new QueryParser(file.toAbsolutePath().toString()).parse());
+			    	Thread t = new Thread(tf, path);
+			    	mapThread.put(t, tf);	    		 
+			    }
+			    long startTime = System.currentTimeMillis();
+			    for (Thread t : mapThread.keySet()) {
+			    	t.start();
+			    }
+			    for (Thread t : mapThread.keySet()) {
+			    	t.join();
+			    }
+			    long endTime = System.currentTimeMillis();
+			    totalTime = endTime - startTime;
+			    for (Thread t : mapThread.keySet()) {
+			    	LinkedHashMap<Query, List<String>> result = mapThread.get(t).getResult();
 	    		    if(verbose) {
-	    		    	String path = file.toAbsolutePath().toString();
-				    	System.out.println(path);
-		    		    System.out.println("Temps écoulé : "+ (endTime-startTime) + "ms");
-	    		    	isEmptyExecution = exportExecutionTime(path,timeQueries, isEmptyExecution);
+				    	System.out.println(t.getName());
+		    		    System.out.println("Temps ï¿½coulï¿½ : "+ mapThread.get(t).getTotalTime() + "ms");
+	    		    	isEmptyExecution = exportExecutionTime(t.getName(),mapThread.get(t).getTotalTime(), isEmptyExecution);
 	    		    }
 	    		    if(!FILEPATH_OUTPUT.isEmpty()) {
 		    		    if(exportStats) {
@@ -138,11 +149,11 @@ public final class RDFRawParser {
 		    		    	isEmptyResults = exportResult(result,isEmptyResults);
 		    		    }
 	    		    }
-			    	queries.clear();
 			    }
 			    if(workloadTime) {
 			    	System.out.println("Temps total : " + totalTime + "ms");
 			    }
+		    
 			} catch (IOException | DirectoryIteratorException e) {
 			    System.err.println(e);
 			    System.exit(-1);
