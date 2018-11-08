@@ -82,7 +82,7 @@ public class HexaStore extends RDFHandlerBase{
 		if(triplets.get(0).getStat()==0) { //Si il y a pas de concordance
 			return new ArrayList<String>();
 		}else {
-			HashSet<Integer> intermediateResult = this.execute(triplets.get(0));			
+			HashSet<Integer> intermediateResult = new HashSet<Integer>(this.execute(triplets.get(0)));			
 			HashSet<Integer> tmpHashSet;
 			for(int i = 1; i < triplets.size() ;i++) {
 				if(intermediateResult.size() == 0) {
@@ -100,7 +100,7 @@ public class HexaStore extends RDFHandlerBase{
 	public HashSet<Integer> execute(Query.Triplet triplet){
 		int tripletPredicate = dictionary.getValue(triplet.getPredicate());
 		int tripletObject = dictionary.getValue(triplet.getObject());
-		return new HashSet<Integer>(POSIndex.getThirdColumn(tripletPredicate, tripletObject));
+		return POSIndex.getThirdColumn(tripletPredicate, tripletObject);
 	}
 	
 	public Dictionary getDictionnary() {
