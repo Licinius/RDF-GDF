@@ -33,10 +33,11 @@ public final class RDFRawParser {
 	public static String ARG_EXPORT_RESULTS = "-export_results";
 	public static String ARG_EXPORT_STATS = "-export_stats";
 	public static String ARG_WORKLOAD_TIME = "-workload_time";
-	
+	public static String ARG_NB_THREAD = "-thread";
 	public static String FILEPATH_QUERIES = "";
 	public static String FILEPATH_DATA = "";
 	public static String FILEPATH_OUTPUT = "";
+	public static int NB_THREAD = 1;
 	/**
 	 * Check if required argument are specified and initialize FILEPATH_QUERIES,FILEPATH_DATA, FILEPATH_OUTPUT
 	 * @param arrayArgs
@@ -56,6 +57,9 @@ public final class RDFRawParser {
 		if(indexData<0 || !new File(FILEPATH_DATA).exists()) {
 			return true;
 		}
+		
+		int indexThread = arrayArgs.indexOf(ARG_NB_THREAD);
+		NB_THREAD = Integer.parseInt(arrayArgs.get(indexThread+1));
 		return false;
 	}
 	
@@ -118,12 +122,24 @@ public final class RDFRawParser {
 			try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
 				long totalTime = 0;
 				HashMap<Thread, ThreadFile> mapThread = new HashMap<Thread, ThreadFile>();
-				
-			    for (Path file: stream) {
-			    	String path = file.toAbsolutePath().toString();
-			    	ThreadFile tf = new ThreadFile(hexaStore, new QueryParser(file.toAbsolutePath().toString()).parse());
-			    	Thread t = new Thread(tf, path);
+				for(Path file:stream) {
+					queries.addAll(new QueryParser(file.toAbsolutePath().toString()).parse());
+				}
+				Collections.shuffle(queries);
+				int sizeQueries = queries.size();
+				int step = sizeQueries / NB_THREAD;
+				int toIndex = step;
+				int fromIndex = 0;
+			    for (; fromIndex< sizeQueries-step;fromIndex+=step) {
+			    	toIndex = fromIndex+step;
+			    	ThreadFile tf = new ThreadFile(hexaStore, new ArrayList<>(queries.subList(fromIndex, toIndex)));
+			    	Thread t = new Thread(tf, fromIndex + "->" + toIndex);
 			    	mapThread.put(t, tf);	    		 
+			    }
+			    if(fromIndex<queries.size()) {
+			    	ThreadFile tf = new ThreadFile(hexaStore, new ArrayList<>(queries.subList(fromIndex, queries.size())));
+			    	Thread t = new Thread(tf, fromIndex + "->" + queries.size());
+			    	mapThread.put(t, tf);	   
 			    }
 			    long startTime = System.currentTimeMillis();
 			    for (Thread t : mapThread.keySet()) {
