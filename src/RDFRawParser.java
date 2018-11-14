@@ -153,6 +153,7 @@ public final class RDFRawParser {
 			    if(workloadTime) {
 			    	System.out.println("Temps total : " + totalTime + "ms");
 			    }
+				System.exit((int)totalTime);
 		    
 			} catch (IOException | DirectoryIteratorException e) {
 			    System.err.println(e);
