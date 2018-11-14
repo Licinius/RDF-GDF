@@ -29,7 +29,6 @@ public final class RDFRawParser {
 	public static String ARG_QUERIES = "-queries";
 	public static String ARG_DATA = "-data";
 	public static String ARG_OUTPUT = "-output";
-	public static String ARG_VERBOSE = "-verbose";
 	public static String ARG_EXPORT_RESULTS = "-export_results";
 	public static String ARG_EXPORT_STATS = "-export_stats";
 	public static String ARG_WORKLOAD_TIME = "-workload_time";
@@ -77,8 +76,6 @@ public final class RDFRawParser {
 		}
 		//Arguments 
 		List<String> arrayArgs = Collections.unmodifiableList(Arrays.asList(args));
-		//-verbose
-		boolean verbose = arrayArgs.contains(ARG_VERBOSE);
 		//-export_results
 		boolean exportResults = arrayArgs.contains(ARG_EXPORT_RESULTS);
 		//-export_stats
@@ -114,41 +111,46 @@ public final class RDFRawParser {
 			Path dir = FileSystems.getDefault().getPath(FILEPATH_QUERIES);
 			boolean isEmptyStats = false;
 			boolean isEmptyResults = false;
-			boolean isEmptyExecution = false;
+			long totalTime = 0;
 			try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
-				long totalTime = 0;
 			    for (Path file: stream) {
-			    	queries = new QueryParser(file.toAbsolutePath().toString()).parse();
-			    	long startTime = System.currentTimeMillis();
-			    	LinkedHashMap<Query,List<String>> result = hexaStore.execute(queries); //Execute toutes les queries du document
-	    		    long endTime = System.currentTimeMillis();
-	    		    long timeQueries = endTime-startTime;
-			    	totalTime += timeQueries;
-	    		    if(verbose) {
-	    		    	String path = file.toAbsolutePath().toString();
-				    	System.out.println(path);
-		    		    System.out.println("Temps �coul� : "+ (endTime-startTime) + "ms");
-	    		    	isEmptyExecution = exportExecutionTime(path,timeQueries, isEmptyExecution);
-	    		    }
-	    		    if(!FILEPATH_OUTPUT.isEmpty()) {
-		    		    if(exportStats) {
-		    		    	isEmptyStats = exportStats(new ArrayList<Query>(result.keySet()), isEmptyStats);
-		    		    }
-		    		    if(exportResults) {
-		    		    	isEmptyResults = exportResult(result,isEmptyResults);
-		    		    }
-	    		    }
-			    	queries.clear();
+			    	queries.addAll(new QueryParser(file.toAbsolutePath().toString()).parse());
+			    	
 			    }
-			    if(workloadTime) {
-			    	System.out.println("Temps total : " + (int)totalTime + "ms");
-			    }
-				System.exit((int)totalTime);
 			} catch (IOException | DirectoryIteratorException e) {
 			    System.err.println(e);
 			    System.exit(-1);
 			}
+			System.out.println("Lancement queries");
+	    	long startTime = System.currentTimeMillis();
+	    	LinkedHashMap<Query,List<String>> result = hexaStore.execute(queries); //Execute toutes les queries du document
+		    long endTime = System.currentTimeMillis();
+		    long timeQueries = endTime-startTime;
+	    	totalTime += timeQueries;
+		    if(!FILEPATH_OUTPUT.isEmpty()) {
+    		    if(exportStats) {
+    		    	try {
+						isEmptyStats = exportStats(new ArrayList<Query>(result.keySet()), isEmptyStats);
+					} catch (IOException e) {
+						e.printStackTrace();
+						System.exit(-1);
 					}
+    		    }
+    		    if(exportResults) {
+    		    	try {
+						isEmptyResults = exportResult(result,isEmptyResults);
+					} catch (IOException e) {
+						e.printStackTrace();
+						System.exit(-1);
+					}
+    		    }
+		    }
+	    	queries.clear();
+		    if(workloadTime) {
+		    	System.out.println("Temps total : " + (int)totalTime + "ms");
+		    }
+			System.exit((int)totalTime);
+		}
 	}
 
 	private static void displayHelpMessage() {

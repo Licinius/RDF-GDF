@@ -60,8 +60,8 @@ public class Query {
 	private ArrayList<Triplet> where;
 	private ArrayList<Triplet> whereOrdered;
 	/**
-	 * Crée une instance de query basé sur une string bien formaté de query rdf
-	 * @param query une chaine de préférence SELECT '[selection]' WHERE { [condition1] . [condition2]}  
+	 * Crï¿½e une instance de query basï¿½ sur une string bien formatï¿½ de query rdf
+	 * @param query une chaine de prï¿½fï¿½rence SELECT '[selection]' WHERE { [condition1] . [condition2]}  
 	 */
 	public Query(String query) {
 		Pattern selectPattern = Pattern.compile("SELECT (\\?[A-z][0-9](\\,\\?[A-z][0-9])*) WHERE.*");
@@ -86,7 +86,7 @@ public class Query {
 	}
 	
 	/**
-	 * Retourne une liste non modifiable correspondant à la selection
+	 * Retourne une liste non modifiable correspondant ï¿½ la selection
 	 * @return List de variable (non modifiable)
 	 */
 	public List<String> getSelect() {
