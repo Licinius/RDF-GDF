@@ -121,6 +121,7 @@ public final class RDFRawParser {
 			    System.err.println(e);
 			    System.exit(-1);
 			}
+			Collections.shuffle(queries);
 			System.out.println("Lancement queries");
 	    	long startTime = System.currentTimeMillis();
 	    	LinkedHashMap<Query,List<String>> result = hexaStore.execute(queries); //Execute toutes les queries du document
