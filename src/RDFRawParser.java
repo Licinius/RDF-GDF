@@ -127,7 +127,7 @@ public final class RDFRawParser {
 	    		    if(verbose) {
 	    		    	String path = file.toAbsolutePath().toString();
 				    	System.out.println(path);
-		    		    System.out.println("Temps écoulé : "+ (endTime-startTime) + "ms");
+		    		    System.out.println("Temps ï¿½coulï¿½ : "+ (endTime-startTime) + "ms");
 	    		    	isEmptyExecution = exportExecutionTime(path,timeQueries, isEmptyExecution);
 	    		    }
 	    		    if(!FILEPATH_OUTPUT.isEmpty()) {
@@ -141,15 +141,14 @@ public final class RDFRawParser {
 			    	queries.clear();
 			    }
 			    if(workloadTime) {
-			    	System.out.println("Temps total : " + totalTime + "ms");
+			    	System.out.println("Temps total : " + (int)totalTime + "ms");
 			    }
+				System.exit((int)totalTime);
 			} catch (IOException | DirectoryIteratorException e) {
 			    System.err.println(e);
 			    System.exit(-1);
 			}
-			
-			
-		}
+					}
 	}
 
 	private static void displayHelpMessage() {

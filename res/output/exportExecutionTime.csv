@@ -1,13 +1,14 @@
 Requete;Execution Time(ms)
-C:\Users\Marvin\git\RDF-GDF\res\queries\Q_1_eligibleregion.queryset;11
-C:\Users\Marvin\git\RDF-GDF\res\queries\Q_1_includes.queryset;2
-C:\Users\Marvin\git\RDF-GDF\res\queries\Q_1_likes.queryset;2
-C:\Users\Marvin\git\RDF-GDF\res\queries\Q_1_nationality.queryset;1
-C:\Users\Marvin\git\RDF-GDF\res\queries\Q_1_subscribes.queryset;1
-C:\Users\Marvin\git\RDF-GDF\res\queries\Q_2_likes_nationality.queryset;1
-C:\Users\Marvin\git\RDF-GDF\res\queries\Q_2_subscribes_likes.queryset;1
-C:\Users\Marvin\git\RDF-GDF\res\queries\Q_2_tag_homepage.queryset;1
-C:\Users\Marvin\git\RDF-GDF\res\queries\Q_3_location_gender_type.queryset;2
-C:\Users\Marvin\git\RDF-GDF\res\queries\Q_3_location_nationality_gender.queryset;1
-C:\Users\Marvin\git\RDF-GDF\res\queries\Q_3_nationality_gender_type.queryset;1
-C:\Users\Marvin\git\RDF-GDF\res\queries\Q_4_location_nationality_gender_type.queryset;1
+/auto_home/fdellomo/git/RDF-GDF/res/queries/10000/Q_3_location_gender_type_10000.queryset;234
+/auto_home/fdellomo/git/RDF-GDF/res/queries/10000/Q_1_nationality_10000.queryset;19
+/auto_home/fdellomo/git/RDF-GDF/res/queries/10000/Q_1_eligibleregion_10000.queryset;64
+/auto_home/fdellomo/git/RDF-GDF/res/queries/10000/Q_2_includes_eligibleRegion_10000.queryset;23
+/auto_home/fdellomo/git/RDF-GDF/res/queries/10000/Q_1_includes_10000.queryset;16
+/auto_home/fdellomo/git/RDF-GDF/res/queries/10000/Q_1_subscribes_10000.queryset;27
+/auto_home/fdellomo/git/RDF-GDF/res/queries/10000/Q_2_likes_nationality_10000.queryset;16
+/auto_home/fdellomo/git/RDF-GDF/res/queries/10000/Q_4_location_nationality_gender_type_10000.queryset;45
+/auto_home/fdellomo/git/RDF-GDF/res/queries/10000/Q_2_subscribes_likes_10000.queryset;18
+/auto_home/fdellomo/git/RDF-GDF/res/queries/10000/Q_3_nationality_gender_type_10000.queryset;76
+/auto_home/fdellomo/git/RDF-GDF/res/queries/10000/Q_2_tag_homepage_10000.queryset;16
+/auto_home/fdellomo/git/RDF-GDF/res/queries/10000/Q_3_location_nationality_gender_10000.queryset;40
+/auto_home/fdellomo/git/RDF-GDF/res/queries/10000/Q_1_likes_10000.queryset;14
