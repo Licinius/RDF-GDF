@@ -48,12 +48,7 @@ public class RDFJennaMain {
 	private static void displayHelpMessage() {
 		String helpMessage = MessageFormat.format("java -jar "+System.getProperty("java.class.path")+ System.lineSeparator()
 				+ "-queries \"{0}chemin{0}vers{0}requetes\"" + System.lineSeparator()
-				+ "-data \"{0}chemin{0}vers{0}donnees\"" + System.lineSeparator()
-				+ "-output \"{0}chemin{0}vers{0}dossier{0}sortie\"" + System.lineSeparator()
-				+ "-verbose" + System.lineSeparator()
-				+ "-export_results" + System.lineSeparator()
-				+ "-export_stats" + System.lineSeparator()
-				+ "-workload_time", File.separator);
+				+ "-data \"{0}chemin{0}vers{0}donnees\"" + System.lineSeparator(), File.separator);
 		System.out.println(helpMessage);
 		System.exit(0);
 	}
