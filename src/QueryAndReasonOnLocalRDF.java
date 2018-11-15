@@ -40,7 +40,7 @@ import com.hp.hpl.jena.util.PrintUtil;
 public class QueryAndReasonOnLocalRDF {
 
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-		String pathToOntology = "res/500K.rdfxml";
+		String pathToOntology = "res/1M.rdfxml";
 		Reader reader = new FileReader(pathToOntology);
 		RDFParser rdfParser = Rio.createParser(RDFFormat.RDFXML);
 		HexaStore hexaStore = new HexaStore();
@@ -62,7 +62,7 @@ public class QueryAndReasonOnLocalRDF {
 		
 		//Parsing des queries
 		ArrayList<Query> queries = new ArrayList<Query>();
-		Path dir = FileSystems.getDefault().getPath("res/queries/1000");
+		Path dir = FileSystems.getDefault().getPath("res/queries/10000");
 		boolean isEmptyStats = false;
 		boolean isEmptyResults = false;
 		long totalTime = 0;
