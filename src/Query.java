@@ -37,7 +37,7 @@ public class Query {
 			return object;
 		}
 		public String toString() {
-			return sujet + " " + predicate + " " + object;
+			return sujet + " <" + predicate + "> <" + object+">";
 		}
 		
 		/**

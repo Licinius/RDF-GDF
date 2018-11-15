@@ -6,14 +6,28 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/auto_home/fdellomo/git/RDF-GDF/lib/commons-io-2.4.jar"/>
-	<classpathentry kind="lib" path="/auto_home/fdellomo/git/RDF-GDF/lib/sesame-model-2.7.11.jar"/>
-	<classpathentry kind="lib" path="/auto_home/fdellomo/git/RDF-GDF/lib/sesame-queryalgebra-evaluation-2.7.11.jar"/>
-	<classpathentry kind="lib" path="/auto_home/fdellomo/git/RDF-GDF/lib/sesame-rio-api-2.7.11.jar"/>
-	<classpathentry kind="lib" path="/auto_home/fdellomo/git/RDF-GDF/lib/sesame-rio-extensions-api-0.1.jar"/>
-	<classpathentry kind="lib" path="/auto_home/fdellomo/git/RDF-GDF/lib/sesame-rio-rdfxml-2.7.11.jar"/>
-	<classpathentry kind="lib" path="/auto_home/fdellomo/git/RDF-GDF/lib/sesame-util-2.7.11.jar"/>
-	<classpathentry kind="lib" path="/auto_home/fdellomo/git/RDF-GDF/lib/slf4j-api-1.6.4.jar"/>
-	<classpathentry kind="lib" path="/auto_home/fdellomo/git/RDF-GDF/lib/slf4j-simple-1.6.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/commons-codec-1.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/commons-io-2.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/httpclient-4.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/httpcore-4.2.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/jcl-over-slf4j-1.6.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/jena-arq-2.11.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/jena-core-2.11.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/jena-iri-1.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/jena-sdb-1.4.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/jena-tdb-1.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/owlapi-distribution-3.4.10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/sesame-model-2.7.11.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/sesame-queryalgebra-evaluation-2.7.11.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/sesame-rio-api-2.7.11.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/sesame-rio-extensions-api-0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/sesame-rio-rdfxml-2.7.11.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/sesame-util-2.7.11.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/slf4j-api-1.6.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/slf4j-log4j12-1.6.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/slf4j-simple-1.6.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/xercesImpl-2.11.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/git/RDF-GDF/lib/xml-apis-1.4.01.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
