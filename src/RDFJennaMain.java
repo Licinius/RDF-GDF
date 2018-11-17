@@ -86,7 +86,8 @@ public class RDFJennaMain {
 		Long start = System.currentTimeMillis();
 
 		model.read(in, null);
-
+    	Collections.shuffle(queries);
+		System.out.println("Lancement queries moteur JENNA data -> "+FILEPATH_DATA + " queries -> " + FILEPATH_QUERIES);
 		start = System.currentTimeMillis();
 		for(Query q : queries) {
 			com.hp.hpl.jena.query.Query query = QueryFactory.create( " PREFIX  rdf: <http://db.uwaterloo.ca/~galuc/wsdbm/#>"

@@ -122,7 +122,7 @@ public final class RDFRawParser {
 			    System.exit(-1);
 			}
 			Collections.shuffle(queries);
-			System.out.println("Lancement queries");
+			System.out.println("Lancement queries moteur RDF data -> "+FILEPATH_DATA + " queries -> " + FILEPATH_QUERIES);
 	    	long startTime = System.currentTimeMillis();
 	    	LinkedHashMap<Query,List<String>> result = hexaStore.execute(queries); //Execute toutes les queries du document
 		    long endTime = System.currentTimeMillis();
