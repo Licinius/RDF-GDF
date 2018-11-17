@@ -119,6 +119,7 @@ public final class RDFRawParser {
 			boolean isEmptyStats = false;
 			boolean isEmptyResults = false;
 			boolean isEmptyExecution = false;
+			System.out.println("Lancement multi-thread data -> " + FILEPATH_DATA + " queries -> " + FILEPATH_QUERIES);
 			try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
 				long totalTime = 0;
 				HashMap<Thread, ThreadFile> mapThread = new HashMap<Thread, ThreadFile>();
@@ -185,6 +186,7 @@ public final class RDFRawParser {
 				+ "-queries \"{0}chemin{0}vers{0}requetes\"" + System.lineSeparator()
 				+ "-data \"{0}chemin{0}vers{0}donnees\"" + System.lineSeparator()
 				+ "-output \"{0}chemin{0}vers{0}dossier{0}sortie\"" + System.lineSeparator()
+				+ "-thread <nbThread>" + System.lineSeparator() 
 				+ "-verbose" + System.lineSeparator()
 				+ "-export_results" + System.lineSeparator()
 				+ "-export_stats" + System.lineSeparator()
