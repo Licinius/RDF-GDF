@@ -35,6 +35,8 @@ import com.hp.hpl.jena.reasoner.rulesys.Rule;
 import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.util.PrintUtil;
 
+import jdk.jshell.SourceCodeAnalysis.Completeness;
+
 
 
 public class QueryAndReasonOnLocalRDF {
@@ -92,7 +94,11 @@ public class QueryAndReasonOnLocalRDF {
 		model.read(in, null);
 
 		System.out.println("Import time : " + (System.currentTimeMillis() - start));
-
+		int cptAnswersJenna = 0;
+		int cptAnswersRDF = 0;
+		int soundness = 0;
+		int completeness = 0;
+		int currentJenna,currentRDF;
 		System.out.println("Lancement queries, si les resultats de jenna sont différents alors print la query ! ");
 		for(Query q : queries) {
 //			System.out.println("Query : " + q.toString());
@@ -106,16 +112,24 @@ public class QueryAndReasonOnLocalRDF {
 			try {
 				ResultSet rs =  ResultSetFactory.copyResults(qexec.execSelect());
 				List<String> resJenna = ResultSetFormatter.toList(rs).stream().map(t -> t.get("v0").toString()).collect(Collectors.toList());
-				result.removeAll(resJenna);
-				if(result.size() > 0) {
-					System.out.println(query);
-					System.out.println(result.size() + " : " + result);
-				}
+				List<String> resJenna2 = new ArrayList<String>(resJenna);
+				currentJenna = resJenna.size();
+				currentRDF= result.size();
+				cptAnswersJenna += resJenna.size();
+				cptAnswersRDF += currentRDF;
+				resJenna.removeAll(result);
+				result.removeAll(resJenna2);
+				soundness +=(currentRDF - result.size());
+				completeness +=(currentJenna-resJenna.size());
+				if (resJenna.size() >0 || result.size()> 0)
+					System.out.println(q.toString());
+				
 			} finally {
 
 				qexec.close();
 			}
 		}
-	System.out.println("Done");	
+	System.out.println("Soundness ==  " + (((double)soundness/cptAnswersJenna)*100) + "%" );	
+	System.out.println("Completeness ==  " + (((double)completeness/cptAnswersRDF)*100) + "%" );	
 	}
 }
